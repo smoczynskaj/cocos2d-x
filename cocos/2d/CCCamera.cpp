@@ -150,6 +150,19 @@ void Camera::lookAt(const Vec3& lookAtPos, const Vec3& up)
     setRotation3D(Vec3(CC_RADIANS_TO_DEGREES(rotx),CC_RADIANS_TO_DEGREES(roty),CC_RADIANS_TO_DEGREES(rotz)));
 }
 
+void BaseLight::onExit()
+{
+    auto scene = getScene();
+    if (scene)
+    {
+        auto &lights = scene->_lights;
+        auto iter = std::find(lights.begin(), lights.end(), this);
+        if (iter != lights.end())
+            lights.erase(iter);
+    }
+    Node::onExit();
+}
+
 const Mat4& Camera::getViewProjectionMatrix() const
 {
     getViewMatrix();
